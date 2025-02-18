@@ -21,6 +21,26 @@
       "dependsOn": ["^start"],
       "cache": false,
       "persistent": true
+    },
+    "build:web": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": [".next/**", "!.next/cache/**"]
+    },
+    "start:web": {
+      "dependsOn": ["^start"],
+      "cache": false,
+      "persistent": true
+    },
+    "build:api": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": ["dist/**"]
+    },
+    "start:api": {
+      "dependsOn": ["^start:prod"],
+      "cache": false,
+      "persistent": true
     }
   }
 }

@@ -6,6 +6,10 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "start": "turbo run start",
+    "build:web": "turbo run build --filter web build",
+    "start:web": "turbo run start --filter web start",
+    "build:api": "turbo run build --filter api build",
+    "start:api": "turbo run start --filter api start",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
     "prepare": "husky install"
