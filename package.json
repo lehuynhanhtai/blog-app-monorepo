@@ -10,6 +10,7 @@
     "start:web": "turbo run start --filter web start",
     "build:api": "turbo run build --filter api build",
     "start:api": "turbo run start --filter api start",
+    "migrate": "turbo run migrate",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
     "prepare": "husky install"

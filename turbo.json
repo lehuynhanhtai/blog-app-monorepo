@@ -41,6 +41,11 @@
       "dependsOn": ["^start:prod"],
       "cache": false,
       "persistent": true
+    },
+    "migrate": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": ["prisma/migrations/**"]
     }
   }
 }
