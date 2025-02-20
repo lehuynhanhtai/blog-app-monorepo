@@ -27,3 +27,14 @@ export const SignupFormSchema = z.object({
     .regex(/[0-9]/, { message: "Contains at least one number" })
     .trim(),
 });
+
+export const SignInFormSchema = z.object({
+  email: z
+    .string()
+    .email({ message: "Please enter a valid email address" })
+    .trim(),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters long" })
+    .trim(),
+});
