@@ -88,4 +88,16 @@ export class AuthService {
       refreshToken,
     };
   }
+
+  async validateGoogleUser({ email, name, password }) {
+    const user = await this.userService.findByEmail(email);
+    if (!user) {
+      return this.userService.create({ email, name, password });
+    }
+
+    return {
+      id: user.id,
+      name: user.name,
+    };
+  }
 }
