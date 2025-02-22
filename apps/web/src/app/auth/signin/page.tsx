@@ -3,6 +3,7 @@ import Link from "next/link";
 import FormSignIn from "./FormSignIn";
 import { getSession, Session } from "@/lib/session";
 import { redirect } from "next/navigation";
+import { BACKEND_URL } from "@/lib/constants";
 
 const SignInPage = async () => {
   const session: Session | null = await getSession();
@@ -29,16 +30,18 @@ const SignInPage = async () => {
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <FormSignIn />
-
-        <p className="mt-10 text-center text-sm/6 text-gray-500">
-          You not a account?
-          <Link
-            href="/auth/signup"
-            className="font-semibold text-indigo-600 hover:text-indigo-500"
-          >
-            Sign up
-          </Link>
-        </p>
+        <div className="flex flex-col items-center mt-6 space-y-4">
+          <a href={`${BACKEND_URL}/auth/google/login`}>SignIn Google</a>
+          <p className="text-sm/6 text-gray-500">
+            You not a account?
+            <Link
+              href="/auth/signup"
+              className="font-semibold text-indigo-600 hover:text-indigo-500"
+            >
+              Sign up
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

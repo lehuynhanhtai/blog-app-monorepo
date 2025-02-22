@@ -271,7 +271,9 @@ const Header: React.FC<HeaderProps> = ({ session }) => {
         </div> */}
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           {session ? (
-            <>{session.user.name}</>
+            <>
+              {session.user.name} <a href={"/api/auth/signout"}>Sign Out</a>
+            </>
           ) : (
             <Link
               href="/auth/signin"

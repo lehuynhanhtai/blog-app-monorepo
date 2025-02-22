@@ -7,6 +7,7 @@ import {
   Get,
   Res,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { LocalAuthGuard } from './guards/local-auth/local-auth.guard';
@@ -50,19 +51,20 @@ export class AuthController {
   @UseGuards(GoogleAuthGuard)
   @Get('google/callback')
   async googleCallback(@Request() req, @Res() res: Response) {
-    console.log('Google User', req.user);
-    // const resopnse = await this.authService.login(
-    //   req.user.id,
-    //   req.user.name,
-    //   req.user.role,
-    // );
-    // res.redirect(
-    //   `http://localhost:3000/api/auth/google/callback?userId=${resopnse.id}&name=${resopnse.name}&accessToken=${resopnse.accessToken}&refreshToken=${resopnse.refreshToken}&role=${resopnse.role}`,
-    // );
+    const resopnse = await this.authService.login(
+      req.user.id,
+      req.user.name,
+      // req.user.role,
+    );
+    res.redirect(
+      `http://localhost:3000/api/auth/google/callback?userId=${resopnse.id}&name=${resopnse.name}&accessToken=${resopnse.accessToken}&refreshToken=${resopnse.refreshToken}`,
+    );
   }
 
-  // @Post('signout')
-  // signOut(@Req() req) {
-  //   return this.authService.signOut(req.user.id);
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Post('signout')
+  signOut(@Request() req) {
+    console.log(req.user);
+    return this.authService.signOut(req.user.id);
+  }
 }
