@@ -14,6 +14,7 @@ import { LocalAuthGuard } from './guards/local-auth/local-auth.guard';
 import { JwtAuthGuard } from './guards/jwt-auth/jwt-auth.guard';
 import { RefreshAuthGuard } from './guards/refresh-auth/refresh-auth.guard';
 import { GoogleAuthGuard } from './guards/google-auth/google-auth.guard';
+import { Public } from './decorators/public.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -24,6 +25,7 @@ export class AuthController {
     return this.authService.registerUser(createUserDto);
   }
 
+  @Public()
   @UseGuards(LocalAuthGuard)
   @Post('signin')
   signIn(@Request() req) {
@@ -38,16 +40,19 @@ export class AuthController {
     };
   }
 
+  @Public()
   @UseGuards(RefreshAuthGuard)
   @Post('refresh')
   async refresh(@Request() req) {
     return this.authService.refreshToken(req.user.id, req.user.name);
   }
 
+  @Public()
   @UseGuards(GoogleAuthGuard)
   @Get('google/login')
   googleLogin() {}
 
+  @Public()
   @UseGuards(GoogleAuthGuard)
   @Get('google/callback')
   async googleCallback(@Request() req, @Res() res: Response) {
@@ -61,7 +66,6 @@ export class AuthController {
     );
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('signout')
   signOut(@Request() req) {
     console.log(req.user);
