@@ -15,6 +15,7 @@ import { JwtAuthGuard } from './guards/jwt-auth/jwt-auth.guard';
 import { RefreshAuthGuard } from './guards/refresh-auth/refresh-auth.guard';
 import { GoogleAuthGuard } from './guards/google-auth/google-auth.guard';
 import { Public } from './decorators/public.decorator';
+import { Roles } from './decorators/roles.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -29,10 +30,10 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('signin')
   signIn(@Request() req) {
-    return this.authService.login(req.user.id, req.user.name);
+    return this.authService.login(req.user.id, req.user.name, req.user.role);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Roles('ADMIN')
   @Get('protected')
   getAll(@Request() req) {
     return {
@@ -59,10 +60,10 @@ export class AuthController {
     const resopnse = await this.authService.login(
       req.user.id,
       req.user.name,
-      // req.user.role,
+      req.user.role,
     );
     res.redirect(
-      `http://localhost:3000/api/auth/google/callback?userId=${resopnse.id}&name=${resopnse.name}&accessToken=${resopnse.accessToken}&refreshToken=${resopnse.refreshToken}`,
+      `http://localhost:3000/api/auth/google/callback?userId=${resopnse.id}&name=${resopnse.name}&accessToken=${resopnse.accessToken}&refreshToken=${resopnse.refreshToken}&role=${resopnse.role}`,
     );
   }
 

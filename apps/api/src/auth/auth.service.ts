@@ -11,6 +11,7 @@ import { UserService } from 'src/user/user.service';
 import { AuthJwtPayload } from './types/auth-jwtPayload';
 import refreshConfig from './config/refresh.config';
 import { ConfigType } from '@nestjs/config';
+import { Role } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -38,16 +39,18 @@ export class AuthService {
     return {
       id: user.id,
       name: user.name,
+      role: user.role,
     };
   }
 
-  async login(userId: number, name: string) {
+  async login(userId: number, name: string, role: Role) {
     const { accessToken, refreshToken } = await this.generateTokens(userId);
     const hashedRT = await hash(refreshToken);
     await this.userService.updateHashRefreshToken(userId, hashedRT);
     return {
       id: userId,
       name: name,
+      role,
       accessToken,
       refreshToken,
     };
@@ -69,7 +72,7 @@ export class AuthService {
   async validateJwtUser(userId: number) {
     const user = await this.userService.findOne(userId);
     if (!user) throw new UnauthorizedException('User not found!');
-    const currentUser = { id: user.id };
+    const currentUser = { id: user.id, role: user.role };
     return currentUser;
   }
 
@@ -103,16 +106,10 @@ export class AuthService {
     };
   }
 
-  async validateGoogleUser({ email, name, password }) {
-    const user = await this.userService.findByEmail(email);
-    if (!user) {
-      return this.userService.create({ email, name, password });
-    }
-
-    return {
-      id: user.id,
-      name: user.name,
-    };
+  async validateGoogleUser(googleUser: CreateUserDto) {
+    const user = await this.userService.findByEmail(googleUser.email);
+    if (user) return user;
+    return await this.userService.create(googleUser);
   }
 
   async signOut(userId: number) {

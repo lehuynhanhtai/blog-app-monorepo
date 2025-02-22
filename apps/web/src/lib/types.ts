@@ -38,3 +38,9 @@ export const SignInFormSchema = z.object({
     .min(8, { message: "Password must be at least 8 characters long" })
     .trim(),
 });
+
+export enum Role {
+  ADMIN = "ADMIN",
+  EDITOR = "EDITOR",
+  USER = "USER",
+}

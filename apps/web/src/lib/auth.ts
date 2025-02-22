@@ -69,7 +69,7 @@ export async function signIn(
       user: {
         id: result.id,
         name: result.name,
-        // role: result.role,
+        role: result.role,
       },
       accessToken: result.accessToken,
       refreshToken: result.refreshToken,
